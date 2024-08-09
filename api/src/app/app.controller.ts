@@ -17,4 +17,9 @@ export class AppController {
   async getUserRepos(@Param('username') username: string): Promise<AxiosResponse<any>> {
     return await lastValueFrom(this.appService.getUserRepos(username));
   }
+
+  @Get('lang/:repourl')
+  async getRepoLanguageData(@Param('repourl') repoUrl: string): Promise<AxiosResponse<any>> {
+    return await lastValueFrom(this.appService.getRepoLanguagesStats(repoUrl));
+  }
 }
