@@ -23,4 +23,20 @@ export class AppService {
       map((response: AxiosResponse) => response.data)
     );
   }
+
+  getUserRepos(username: string): Observable<any> {
+    return this.httpClient.get(this.BASE_URL + 'users/' + username + '/repos?per_page=100', {
+      headers: this.headers
+    }).pipe(
+      map((response: AxiosResponse) => response.data)
+    );
+  }
+
+  getRepoLanguagesStats(languagesUrl: string): Observable<any> {
+    return this.httpClient.get(languagesUrl, {
+      headers: this.headers
+    }).pipe(
+      map((response: AxiosResponse) => response.data)
+    );
+  }
 }

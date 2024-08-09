@@ -12,4 +12,9 @@ export class AppController {
   async getData(@Param('username') username: string): Promise<AxiosResponse<any>> {
     return await lastValueFrom(this.appService.getUserInfo(username));
   }
+
+  @Get('repos/:username')
+  async getUserRepos(@Param('username') username: string): Promise<AxiosResponse<any>> {
+    return await lastValueFrom(this.appService.getUserRepos(username));
+  }
 }
