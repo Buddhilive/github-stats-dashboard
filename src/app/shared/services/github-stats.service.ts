@@ -1,0 +1,14 @@
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class GithubStatsService {
+  private HTTP_CLIENT = inject(HttpClient);
+  private BASE_URL = 'https://api.github.com/';
+
+  getUserInfo(username: string) {
+    return this.HTTP_CLIENT.get(this.BASE_URL + 'users/' + username);
+  }
+}
