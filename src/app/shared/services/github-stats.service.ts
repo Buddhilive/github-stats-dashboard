@@ -16,7 +16,8 @@ export class GithubStatsService {
   }
 
   getUserRepos(username: string) {
-    return this.HTTP_CLIENT.get(this.BASE_URL + 'users/' + username + '/repos?per_page=100', { headers: this.headers });
+    // return this.HTTP_CLIENT.get(this.BASE_URL + 'users/' + username + '/repos?per_page=100', { headers: this.headers });
+    return this.HTTP_CLIENT.get('/api');
   }
 
   getRepoLanguagesStats(languagesUrl: string) {
