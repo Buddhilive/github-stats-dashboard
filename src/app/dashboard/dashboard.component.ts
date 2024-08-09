@@ -11,6 +11,6 @@ import { GithubStatsService } from '../shared/services/github-stats.service';
 export class DashboardComponent {
   private githubStatsService = inject(GithubStatsService);
   fetchUserInfo(){
-    this.githubStatsService.getUserInfo('buddhilive').subscribe(data => console.log(data));
+    this.githubStatsService.getUserRepos('buddhilive').subscribe(data => console.log(data));
   }
 }
