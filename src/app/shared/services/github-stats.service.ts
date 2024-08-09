@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
 @Injectable({
@@ -6,21 +6,17 @@ import { inject, Injectable } from '@angular/core';
 })
 export class GithubStatsService {
   private HTTP_CLIENT = inject(HttpClient);
-  private BASE_URL = 'https://api.github.com/';
-  private headers = new HttpHeaders({
-    Authorization: 'token ' + 'ghp_7jJw5j2sHnOqXs6WqK0Qs7p0iA8xjO9vOJ6v'
-  });
+  private BASE_URL = 'api/';
 
   getUserInfo(username: string) {
-    return this.HTTP_CLIENT.get(this.BASE_URL + 'users/' + username);
+    return this.HTTP_CLIENT.get(this.BASE_URL + username);
   }
 
   getUserRepos(username: string) {
-    // return this.HTTP_CLIENT.get(this.BASE_URL + 'users/' + username + '/repos?per_page=100', { headers: this.headers });
-    return this.HTTP_CLIENT.get('/api');
+    return this.HTTP_CLIENT.get(this.BASE_URL);
   }
 
   getRepoLanguagesStats(languagesUrl: string) {
-    return this.HTTP_CLIENT.get(languagesUrl, { headers: this.headers });
+    return this.HTTP_CLIENT.get(languagesUrl);
   }
 }

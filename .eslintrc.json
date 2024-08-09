@@ -10,7 +10,9 @@
           "error",
           {
             "enforceBuildableLibDependency": true,
-            "allow": [],
+            "allow": [
+              "@nestjs/*"
+            ],
             "depConstraints": [
               {
                 "sourceTag": "*",
