@@ -1,8 +1,9 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 import { AppService } from './app.service';
 import { AxiosResponse } from 'axios';
 import { lastValueFrom } from 'rxjs';
+import { RepoDetailsDTO } from './dto/repo-details.dto';
 
 @Controller()
 export class AppController {
@@ -18,8 +19,8 @@ export class AppController {
     return await lastValueFrom(this.appService.getUserRepos(username));
   }
 
-  @Get('lang/:repourl')
-  async getRepoLanguageData(@Param('repourl') repoUrl: string): Promise<AxiosResponse<any>> {
-    return await lastValueFrom(this.appService.getRepoLanguagesStats(repoUrl));
+  @Post('lang')
+  async getRepoLanguageData(@Body() repoDetails: RepoDetailsDTO): Promise<AxiosResponse<any>> {
+    return await lastValueFrom(this.appService.getRepoLanguagesStats(repoDetails.language_url));
   }
 }
