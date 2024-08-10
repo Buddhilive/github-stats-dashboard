@@ -15,4 +15,8 @@ export class GithubStatsService {
   getAllRepos(username: string) {
     return this.HTTP_CLIENT.get(this.BASE_URL + 'repos/' + username);
   }
+
+  getRepoLanguageStats(repoUrl: string) {
+    return this.HTTP_CLIENT.post(this.BASE_URL + 'lang', { language_url: repoUrl });
+  }
 }
