@@ -17,6 +17,7 @@ export class DashboardComponent {
 
   username!: string;
   userProfile!: GithubUserProfile;
+  repoData = [];
 
   fetchUserInfo() {
     this.githubStatsService.getUserInfo(this.username).subscribe((data: any) => {
@@ -29,6 +30,22 @@ export class DashboardComponent {
       };
       sessionStorage.setItem('github-stats-username', JSON.stringify(this.userProfile));
       sessionStorage.setItem('github-stats-username2', JSON.stringify(data));
+      this.fetchAllRepos();
     });
+  }
+
+  fetchAllRepos() {
+    this.githubStatsService.getAllRepos(this.username).subscribe((data: any) => {
+      this.repoData = data;
+      localStorage.setItem('github-stats-repos', JSON.stringify(data));
+      this.fetchLanguageStats();
+    });
+  }
+
+  fetchLanguageStats() {
+    this.repoData = JSON.parse(localStorage.getItem('github-stats-repos')!);
+    for(let repo in this.repoData) {
+      console.log(`Repositary ${repo}: `, this.repoData[repo]);
+    }
   }
 }

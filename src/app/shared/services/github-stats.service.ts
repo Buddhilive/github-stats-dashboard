@@ -11,4 +11,8 @@ export class GithubStatsService {
   getUserInfo(username: string) {
     return this.HTTP_CLIENT.get(this.BASE_URL + username);
   }
+
+  getAllRepos(username: string) {
+    return this.HTTP_CLIENT.get(this.BASE_URL + 'repos/' + username);
+  }
 }
