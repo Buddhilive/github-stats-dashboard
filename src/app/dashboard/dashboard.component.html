@@ -1,2 +1,10 @@
-<p>dashboard works!</p>
+<input [(ngModel)]="username" type="text" name="username" id="username" placeholder="Enter username">
 <button (click)="fetchUserInfo()">Get info</button>
+
+@if(userProfile) {
+    <div class="github-stats__user-info">
+        <h3>{{ userProfile.name }}</h3>
+        <p>{{ userProfile.bio }}</p>
+        <img src="{{ userProfile.avatar_url }}" alt="Profile photo">
+    </div>
+}
