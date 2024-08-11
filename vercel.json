@@ -1,7 +1,7 @@
 {
   "version": 2,
   "functions": {
-    "dist/api/main.js": {
+    "api/main.ts": {
       "memory": 1024,
       "maxDuration": 30
     }
@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/api/main.js",
+      "dest": "api/main.ts",
       "methods": ["GET", "POST", "PUT", "DELETE"]
     }
   ]
