@@ -1,10 +1,32 @@
-<input [(ngModel)]="username" type="text" name="username" id="username" placeholder="Enter username">
-<button (click)="fetchUserInfo()">Get info</button>
-
-@if(userProfile) {
-    <app-user-details [data]="userProfile"></app-user-details>
-}
-
-@if(repoData) {
-    <app-language-stats [repoData]="repoData"></app-language-stats>
-}
+<header class="buddhilive__header">
+  <h3>Github Stats Dashboard</h3>
+</header>
+<main class="buddhilive__main">
+  @if(!userProfile) {
+  <div class="buddhilive__start">
+    <input
+      [(ngModel)]="username"
+      type="text"
+      name="username"
+      id="username"
+      placeholder="Enter username"
+      pInputText
+    />
+    <button pButton (click)="fetchUserInfo()">Get Stats</button>
+  </div>
+  } @else {
+  <div class="buddhilive__stats">
+    <div class="buddhilive__userinfo">
+      @if(userProfile) {
+      <app-user-details [data]="userProfile"></app-user-details>
+      }
+    </div>
+    <div class="buddhilive__userstats">
+      @if(repoData && repoData.length > 0) {
+      <app-language-stats [repoData]="repoData"></app-language-stats>
+      }
+    </div>
+  </div>
+  }
+</main>
+<footer class="buddhilive__footer"></footer>

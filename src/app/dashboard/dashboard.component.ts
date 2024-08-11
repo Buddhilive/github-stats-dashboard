@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { GithubUserProfile } from '../shared/constants/github-user.interface';
 import { UserDetailsComponent } from '../components/user-details/user-details.component';
 import { LanguageStatsComponent } from '../components/language-stats/language-stats.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +13,9 @@ import { LanguageStatsComponent } from '../components/language-stats/language-st
   imports: [
     FormsModule,
     UserDetailsComponent,
-    LanguageStatsComponent
+    LanguageStatsComponent,
+    InputTextModule,
+    ButtonModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',

@@ -1,0 +1,47 @@
+.buddhilive {
+    &__header {
+        height: 60px;
+        width: 100%;
+        background-color: #ddd;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .h3 {
+            margin: 0;
+        }
+    }
+    &__main {
+        padding: 16px;
+        min-height: calc(100vh - 60px);
+    }
+    &__start {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        height: calc(100vh - 92px);
+    }
+    &__stats {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 92px);
+        gap: 16px;
+    }
+    &__userinfo {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 92px);
+        width: 20%;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    &__userstats {
+        height: calc(100vh - 92px);
+        flex-grow: 1;
+        overflow-y: auto;
+    }
+}
