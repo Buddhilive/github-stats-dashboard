@@ -1,5 +1,8 @@
 <header class="buddhilive__header">
   <h3>Github Stats Dashboard</h3>
+  <div class="action-items">
+    <button pButton (click)="newProfile()">New</button>
+  </div>
 </header>
 <main class="buddhilive__main">
   @if(!userProfile) {
@@ -23,7 +26,7 @@
     </div>
     <div class="buddhilive__userstats">
       @if(repoData && repoData.length > 0) {
-      <app-language-stats [repoData]="repoData"></app-language-stats>
+      <app-language-stats [repoData]="repoData" [username]="username"></app-language-stats>
       }
     </div>
   </div>

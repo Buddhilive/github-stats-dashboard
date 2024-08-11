@@ -24,33 +24,46 @@ export class DashboardComponent {
   private githubStatsService = inject(GithubStatsService);
 
   username!: string;
-  userProfile!: GithubUserProfile;
+  userProfile!: GithubUserProfile | undefined;
   repoData: Array<any> = [];
 
   fetchUserInfo() {
-    this.githubStatsService.getUserInfo(this.username).subscribe((data: any) => {
-      this.userProfile = {
-        username: this.username,
-        avatar_url: data.avatar_url,
-        bio: data.bio,
-        name: data.name,
-        location: data.location,
-        public_repos: data.public_repos,
-        public_gists: data.public_gists,
-        followers: data.followers,
-        following: data.following,
-        created_at: data.created_at
-      };
-      sessionStorage.setItem('github-stats-username', JSON.stringify(this.userProfile));
-      sessionStorage.setItem('github-stats-username2', JSON.stringify(data));
-      this.fetchAllRepos();
-    });
+    if (sessionStorage.getItem(`github-stats-${this.username}`)) {
+      this.userProfile = JSON.parse(sessionStorage.getItem(`github-stats-${this.username}`)!);
+      this.username = this.userProfile?.username ? this.userProfile?.username : '';
+    } else {
+      this.githubStatsService.getUserInfo(this.username).subscribe((data: any) => {
+        this.userProfile = {
+          username: this.username,
+          avatar_url: data.avatar_url,
+          bio: data.bio,
+          name: data.name,
+          location: data.location,
+          public_repos: data.public_repos,
+          public_gists: data.public_gists,
+          followers: data.followers,
+          following: data.following,
+          created_at: data.created_at
+        };
+        sessionStorage.setItem(`github-stats-${this.username}`, JSON.stringify(this.userProfile));
+      });
+    }
+    this.fetchAllRepos();
   }
 
   fetchAllRepos() {
-    this.githubStatsService.getAllRepos(this.username).subscribe((data: any) => {
-      this.repoData = data;
-      localStorage.setItem('github-stats-repos', JSON.stringify(data));
-    });
+    if (sessionStorage.getItem(`github-stats-repos-${this.username}`)) {
+      this.repoData = JSON.parse(sessionStorage.getItem(`github-stats-repos-${this.username}`)!);
+    } else {
+      this.githubStatsService.getAllRepos(this.username).subscribe((data: any) => {
+        this.repoData = data;
+        sessionStorage.setItem(`github-stats-repos-${this.username}`, JSON.stringify(data));
+      });
+    }
+  }
+
+  newProfile() {
+    this.userProfile = undefined;
+    this.username = '';
   }
 }

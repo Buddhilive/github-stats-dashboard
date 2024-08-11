@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit } from '@angular/core';
 import { GithubStatsService } from '../../shared/services/github-stats.service';
 import { catchError, forkJoin } from 'rxjs';
 import { ChartModule } from 'primeng/chart';
@@ -22,35 +22,47 @@ import { CardModule } from 'primeng/card';
   templateUrl: './language-stats.component.html',
   styleUrl: './language-stats.component.scss'
 })
-export class LanguageStatsComponent implements OnChanges {
+export class LanguageStatsComponent implements OnChanges, OnInit {
   @Input() repoData!: Array<any>;
+  @Input() username!: string;
   private githubStatsService = inject(GithubStatsService);
   chartData: any;
   languageStats!: GithubLanguageData;
-  tableData!: Array<LangstatTabledata>
+  tableData!: Array<LangstatTabledata>;
+
+  ngOnInit(): void {
+    this.chartData = null;
+    this.tableData = [];
+  }
 
   ngOnChanges(): void {
+    this.chartData = null;
+    this.tableData = [];
     this.fetchLanguageStats();
   }
 
   fetchLanguageStats() {
-    const languageStatsObservables = this.repoData.map((repo: any) =>
-      this.githubStatsService.getRepoLanguageStats(repo.languages_url).pipe(
-        catchError((error) => {
-          console.error(`Failed to fetch language stats for repo: ${repo.name}`, error);
-          return [];
-        })
-      )
-    );
-
-    forkJoin(languageStatsObservables).subscribe(
-      (repoLanguageData: Array<any>) => {
-        localStorage.setItem('github-stats-repos-lan', JSON.stringify(repoLanguageData));
-        const allLangSummary = this.sumByKeyAndTotal(repoLanguageData);
-        localStorage.setItem('github-stats-lan-summary', JSON.stringify(allLangSummary));
-      },
-      (error) => console.error('An error occurred while fetching language stats', error)
-    );
+    if (sessionStorage.getItem(`github-stats-lan-data-${this.username}`)) {
+      const repoLanguageData = JSON.parse(sessionStorage.getItem(`github-stats-lan-data-${this.username}`)!);
+      this.sumByKeyAndTotal(repoLanguageData);
+    } else {
+      const languageStatsObservables = this.repoData.map((repo: any) =>
+        this.githubStatsService.getRepoLanguageStats(repo.languages_url).pipe(
+          catchError((error) => {
+            console.error(`Failed to fetch language stats for repo: ${repo.name}`, error);
+            return [];
+          })
+        )
+      );
+  
+      forkJoin(languageStatsObservables).subscribe(
+        (repoLanguageData: Array<any>) => {
+          this.sumByKeyAndTotal(repoLanguageData);
+          sessionStorage.setItem(`github-stats-lan-data-${this.username}`, JSON.stringify(repoLanguageData));
+        },
+        (error) => console.error('An error occurred while fetching language stats', error)
+      );
+    }
   }
 
   private sumByKeyAndTotal(data: Array<any>) {
