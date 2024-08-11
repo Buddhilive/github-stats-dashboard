@@ -48,5 +48,10 @@
       },
       "exclude": ["api-e2e/**/*"]
     }
-  ]
+  ],
+  "generators": {
+    "@nx/angular:component": {
+      "style": "scss"
+    }
+  }
 }
