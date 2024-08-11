@@ -1,0 +1,30 @@
+.buddhilive {
+    &__userprofile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+        gap: 8px;
+        height: calc(100vh - 92px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        .profile {
+            height: 80px;
+            width: 80px;
+            border-radius: 50%;
+        }
+        .name {
+            margin: 0;
+            text-align: center;
+        }
+        .username {
+            margin: 0;
+            text-align: center;
+        }
+        .bio {
+            margin: 0;
+            text-align: center;
+        }
+    }
+}

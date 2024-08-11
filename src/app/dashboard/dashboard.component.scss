@@ -30,14 +30,10 @@
         gap: 16px;
     }
     &__userinfo {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
         height: calc(100vh - 92px);
         width: 20%;
-        overflow-x: hidden;
-        overflow-y: auto;
+        overflow: hidden;
+        border-right: 1px solid #ddd;
     }
     &__userstats {
         height: calc(100vh - 92px);
