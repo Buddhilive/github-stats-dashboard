@@ -12,7 +12,6 @@
         }
     }
     &__main {
-        padding: 16px;
         min-height: calc(100vh - 60px);
     }
     &__start {
@@ -20,23 +19,23 @@
         justify-content: center;
         align-items: center;
         gap: 12px;
-        height: calc(100vh - 92px);
+        height: calc(100vh - 60px);
     }
     &__stats {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: calc(100vh - 92px);
+        height: calc(100vh - 60px);
         gap: 16px;
     }
     &__userinfo {
-        height: calc(100vh - 92px);
+        height: calc(100vh - 60px);
         width: 20%;
         overflow: hidden;
         border-right: 1px solid #ddd;
     }
     &__userstats {
-        height: calc(100vh - 92px);
+        height: calc(100vh - 60px);
         flex-grow: 1;
         overflow-y: auto;
     }
