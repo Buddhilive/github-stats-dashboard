@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { GithubUserProfile } from '../../shared/constants/github-user.interface';
 
 @Component({
   selector: 'app-user-details',
@@ -8,4 +9,6 @@ import { CommonModule } from '@angular/common';
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.scss',
 })
-export class UserDetailsComponent {}
+export class UserDetailsComponent {
+  @Input() data!: GithubUserProfile;
+}

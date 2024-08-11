@@ -4,13 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { GithubUserProfile } from '../shared/constants/github-user.interface';
 import { catchError, forkJoin } from 'rxjs';
 import { ChartModule } from 'primeng/chart';
+import { UserDetailsComponent } from '../components/user-details/user-details.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
     FormsModule,
-    ChartModule
+    ChartModule,
+    UserDetailsComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -30,7 +32,12 @@ export class DashboardComponent {
         avatar_url: data.avatar_url,
         bio: data.bio,
         name: data.name,
-        location: data.location
+        location: data.location,
+        public_repos: data.public_repos,
+        public_gists: data.public_gists,
+        followers: data.followers,
+        following: data.following,
+        created_at: data.created_at
       };
       sessionStorage.setItem('github-stats-username', JSON.stringify(this.userProfile));
       sessionStorage.setItem('github-stats-username2', JSON.stringify(data));
@@ -56,7 +63,7 @@ export class DashboardComponent {
         })
       )
     );
-  
+
     forkJoin(languageStatsObservables).subscribe(
       (repoLanguageData: Array<any>) => {
         localStorage.setItem('github-stats-repos-lan', JSON.stringify(repoLanguageData));
@@ -74,17 +81,17 @@ export class DashboardComponent {
       });
       return acc;
     }, {});
-  
+
     const totalSum = Object.values(groupedData).reduce((acc, val) => acc + val, 0);
     this.chartData = this.formatDataForChart(groupedData);
-  
+
     return { groupedData, totalSum };
   }
 
   private formatDataForChart(groupedData: Object) {
     const labels = Object.keys(groupedData);
     const data = Object.values(groupedData);
-  
+
     return {
       labels,
       datasets: [{
@@ -94,5 +101,5 @@ export class DashboardComponent {
       }]
     };
   }
-  
+
 }

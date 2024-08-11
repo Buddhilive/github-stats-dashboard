@@ -2,11 +2,7 @@
 <button (click)="fetchLanguageStats()">Get info</button>
 
 @if(userProfile) {
-    <div class="github-stats__user-info">
-        <h3>{{ userProfile.name }}</h3>
-        <p>{{ userProfile.bio }}</p>
-        <img src="{{ userProfile.avatar_url }}" alt="Profile photo">
-    </div>
+    <app-user-details [data]="userProfile"></app-user-details>
 }
 
 <div class="card flex justify-content-center">
