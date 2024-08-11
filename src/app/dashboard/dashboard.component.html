@@ -1,10 +1,10 @@
 <input [(ngModel)]="username" type="text" name="username" id="username" placeholder="Enter username">
-<button (click)="fetchLanguageStats()">Get info</button>
+<button (click)="fetchUserInfo()">Get info</button>
 
 @if(userProfile) {
     <app-user-details [data]="userProfile"></app-user-details>
 }
 
-<div class="card flex justify-content-center">
-    <p-chart type="pie" [data]="chartData"/>
-</div>
+@if(repoData) {
+    <app-language-stats [repoData]="repoData"></app-language-stats>
+}
