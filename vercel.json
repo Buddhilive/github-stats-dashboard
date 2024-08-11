@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "dist/api/main.js",
-      "use": "@vercel/node"
+  "functions": {
+    "api/main.js": {
+      "memory": 3009,
+      "maxDuration": 30
     }
-  ],
+  },
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/api/main.js",
+      "dest": "api/main.js",
       "methods": ["GET", "POST", "PUT", "DELETE"]
     }
   ]
