@@ -1,3 +1,35 @@
-<div class="card flex justify-content-center">
-    <p-chart type="pie" [data]="chartData"/>
+<div class="buddhilive__lang-stats">
+  @if(tableData && chartData) {
+  <p-card header="Top 10 Languages">
+    <p-chart type="bar" [data]="chartData" />
+  </p-card>
+
+  <p-card header="All languages by number of lines">
+    <p-table
+      [value]="tableData"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="[5, 10, 20]"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Language</th>
+          <th pSortableColumn="lines">
+            No. Lines <p-sortIcon field="lines" />
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-lang>
+        <tr>
+          <td>{{ lang.name }}</td>
+          <td>{{ lang.lines | number : '1.0' : 'en-US' }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+  } @else {
+  <div class="buddhilive__progress">
+    <p-progressSpinner strokeWidth="8" animationDuration=".5s" />
+  </div>
+  }
 </div>

@@ -1,0 +1,14 @@
+.buddhilive {
+    &__lang-stats {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    &__progress {
+        min-height: calc(100vh - 124px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
