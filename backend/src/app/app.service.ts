@@ -10,33 +10,34 @@ export class AppService {
 
   constructor(
     private httpClient: HttpService,
-    private _configService: ConfigService) {
+    private _configService: ConfigService
+  ) {
     this.headers = {
-      Authorization: 'token ' + _configService.get('GITHUB_AUTH_TOKEN')
-    }
+      Authorization: 'token ' + _configService.get('GITHUB_AUTH_TOKEN'),
+    };
   }
 
   getUserInfo(username: string): Observable<any> {
-    return this.httpClient.get(this.BASE_URL + 'users/' + username, {
-      headers: this.headers
-    }).pipe(
-      map((response: AxiosResponse) => response.data)
-    );
+    return this.httpClient
+      .get(this.BASE_URL + 'users/' + username, {
+        headers: this.headers,
+      })
+      .pipe(map((response: AxiosResponse) => response.data));
   }
 
   getUserRepos(username: string): Observable<any> {
-    return this.httpClient.get(this.BASE_URL + 'users/' + username + '/repos?per_page=100', {
-      headers: this.headers
-    }).pipe(
-      map((response: AxiosResponse) => response.data)
-    );
+    return this.httpClient
+      .get(this.BASE_URL + 'users/' + username + '/repos?per_page=100', {
+        headers: this.headers,
+      })
+      .pipe(map((response: AxiosResponse) => response.data));
   }
 
   getRepoLanguagesStats(languagesUrl: string): Observable<any> {
-    return this.httpClient.get(languagesUrl, {
-      headers: this.headers
-    }).pipe(
-      map((response: AxiosResponse) => response.data)
-    );
+    return this.httpClient
+      .get(languagesUrl, {
+        headers: this.headers,
+      })
+      .pipe(map((response: AxiosResponse) => response.data));
   }
 }

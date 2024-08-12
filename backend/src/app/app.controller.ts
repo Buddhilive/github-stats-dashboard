@@ -10,17 +10,25 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('/:username')
-  async getData(@Param('username') username: string): Promise<AxiosResponse<any>> {
+  async getData(
+    @Param('username') username: string
+  ): Promise<AxiosResponse<any>> {
     return await lastValueFrom(this.appService.getUserInfo(username));
   }
 
   @Get('repos/:username')
-  async getUserRepos(@Param('username') username: string): Promise<AxiosResponse<any>> {
+  async getUserRepos(
+    @Param('username') username: string
+  ): Promise<AxiosResponse<any>> {
     return await lastValueFrom(this.appService.getUserRepos(username));
   }
 
   @Post('lang')
-  async getRepoLanguageData(@Body() repoDetails: RepoDetailsDTO): Promise<AxiosResponse<any>> {
-    return await lastValueFrom(this.appService.getRepoLanguagesStats(repoDetails.language_url));
+  async getRepoLanguageData(
+    @Body() repoDetails: RepoDetailsDTO
+  ): Promise<AxiosResponse<any>> {
+    return await lastValueFrom(
+      this.appService.getRepoLanguagesStats(repoDetails.language_url)
+    );
   }
 }

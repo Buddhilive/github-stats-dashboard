@@ -1,3 +1,3 @@
 export class RepoDetailsDTO {
-    language_url!: string;
+  language_url!: string;
 }

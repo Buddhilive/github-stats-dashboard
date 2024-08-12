@@ -1,7 +1,7 @@
 {
-  "name": "api",
+  "name": "backend",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "api/src",
+  "sourceRoot": "backend/src",
   "projectType": "application",
   "tags": [],
   "targets": {
@@ -9,14 +9,14 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "api:build"
+        "buildTarget": "backend:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "api:build:development"
+          "buildTarget": "backend:build:development"
         },
         "production": {
-          "buildTarget": "api:build:production"
+          "buildTarget": "backend:build:production"
         }
       }
     }

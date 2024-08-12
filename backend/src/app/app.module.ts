@@ -11,7 +11,7 @@ import { AppService } from './app.service';
   imports: [
     HttpModule,
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
     /* ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client/browser'),
@@ -21,4 +21,4 @@ import { AppService } from './app.service';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
