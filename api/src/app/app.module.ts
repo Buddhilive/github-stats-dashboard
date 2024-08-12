@@ -14,7 +14,7 @@ import { AppService } from './app.service';
       isGlobal: true
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, './', 'client/browser'),
+      rootPath: join(__dirname, '..', 'client/browser'),
       exclude: ['api/*']
     })
   ],
