@@ -1,7 +1,7 @@
 {
   "functions": {
-    "api/src/main.ts": {
-      "runtime": "node@20.9.0"
+    "api/prod/main.js": {
+      "maxDuration": 30
     }
   },
   "rewrites": [
