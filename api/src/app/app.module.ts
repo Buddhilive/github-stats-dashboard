@@ -13,10 +13,10 @@ import { AppService } from './app.service';
     ConfigModule.forRoot({
       isGlobal: true
     }),
-    /* ServeStaticModule.forRoot({
+    ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client/browser'),
       exclude: ['api/*']
-    }) */
+    })
   ],
   controllers: [AppController],
   providers: [AppService],
