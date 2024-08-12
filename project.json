@@ -13,7 +13,7 @@
     "build": {
       "executor": "@angular-devkit/build-angular:application",
       "options": {
-        "outputPath": "dist",
+        "outputPath": "build/client",
         "index": "src/index.html",
         "browser": "src/main.ts",
         "polyfills": ["zone.js"],

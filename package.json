@@ -4,12 +4,15 @@
   "scripts": {
     "ng": "ng",
     "start": "nx run-many --parallel -t serve",
-    "build": "nx build --project=github-stats-dashboard",
+    "build": "npm run build:all",
+    "postbuild": "node ./postbuild.js",
     "watch": "nx build --watch --configuration development",
     "test": "nx test",
     "start:frontend": "nx serve --project=github-stats-dashboard",
     "start:api": "nx serve --project=backend",
-    "build:all": "nx run-many --targets=build"
+    "build:all": "nx run-many --targets=build",
+    "build:client": "nx build --project=github-stats-dashboard",
+    "build:backend": "nx build --project=backend"
   },
   "private": true,
   "dependencies": {
