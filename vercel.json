@@ -1,13 +1,8 @@
 {
-  "functions": {
-    "api/prod/main.js": {
-      "maxDuration": 30
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/api"
+      "destination": "/browser"
     }
   ]
 }
