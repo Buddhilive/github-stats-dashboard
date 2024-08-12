@@ -1,8 +1,13 @@
 {
+  "functions": {
+    "api/src/main.ts": {
+      "runtime": "node@20.9.0"
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "api/"
+      "destination": "/"
     }
   ]
 }
