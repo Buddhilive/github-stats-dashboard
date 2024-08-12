@@ -1,12 +1,12 @@
 {"functions": {
-    "api/main.js": {
+    "api/*.js": {
       "runtime": "nodejs@20.9.0"
     }
   },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/"
+      "destination": "client/browser"
     }
   ]
 }
