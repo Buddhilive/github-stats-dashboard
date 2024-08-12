@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "nx run-many --parallel -t serve",
-    "build": "npm run build:all",
+    "build": "npm run build:client",
     "postbuild": "node ./postbuild.js",
     "watch": "nx build --watch --configuration development",
     "test": "nx test",
