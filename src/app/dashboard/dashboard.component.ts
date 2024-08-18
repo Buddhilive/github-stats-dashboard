@@ -56,8 +56,8 @@ export class DashboardComponent {
       this.repoData = JSON.parse(sessionStorage.getItem(`github-stats-repos-${this.username}`)!);
     } else {
       this.githubStatsService.getAllRepos(this.username).subscribe((data: any) => {
-        this.repoData = data;
-        sessionStorage.setItem(`github-stats-repos-${this.username}`, JSON.stringify(data));
+        this.repoData = data.filter((item: any) => !item.fork);
+        sessionStorage.setItem(`github-stats-repos-${this.username}`, JSON.stringify(this.repoData));
       });
     }
   }
