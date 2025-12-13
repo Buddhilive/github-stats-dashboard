@@ -45,10 +45,10 @@ export default async function Home() {
               className="border-yellow-200 dark:border-yellow-900/30 bg-yellow-50/50 dark:bg-yellow-900/10"
             />
             <StatsCard
-              title="Total Commits"
-              value={stats.totalCommits.toLocaleString()}
+              title="Total Contributions"
+              value={stats.lifetimeTotalContributions.toLocaleString()}
               icon={GitCommit}
-              subValue={`+ ${stats.totalPRs} Pull Requests`}
+              subValue={`${stats.totalCommits.toLocaleString()} Commits`}
               className="border-blue-200 dark:border-blue-900/30 bg-blue-50/50 dark:bg-blue-900/10"
             />
           </div>
