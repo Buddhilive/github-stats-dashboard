@@ -21,7 +21,7 @@ export default async function Home() {
       <main className="min-h-screen bg-zinc-50 dark:bg-zinc-950 p-4 md:p-8 flex flex-col items-center justify-center font-sans">
         <div className="w-full max-w-4xl space-y-8">
           <div className="text-center space-y-2">
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+            <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
               GitHub Stats Dashboard
             </h1>
             <p className="text-zinc-500 dark:text-zinc-400">
@@ -49,7 +49,15 @@ export default async function Home() {
               title="Total Contributions"
               value={stats.lifetimeTotalContributions.toLocaleString()}
               icon={GitCommit}
-              subValue={`${stats.totalCommits.toLocaleString()} Commits`}
+              subValue={`${new Date(
+                stats.firstContributionDate
+              ).toLocaleDateString("en-US", {
+                month: "short",
+                year: "numeric",
+              })} - ${new Date().toLocaleDateString("en-US", {
+                month: "short",
+                year: "numeric",
+              })}`}
               className="border-blue-200 dark:border-blue-900/30 bg-blue-50/50 dark:bg-blue-900/10"
             />
           </div>
@@ -71,7 +79,7 @@ export default async function Home() {
             {/* Section 3: Current Year Snapshot */}
             <div className="space-y-4">
               {/* Total Contributions Card */}
-              <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-6 text-white shadow-md">
+              <div className="bg-linear-to-br from-indigo-500 to-purple-600 rounded-xl p-6 text-white shadow-md">
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <p className="text-indigo-100 text-sm font-medium">
@@ -104,7 +112,8 @@ export default async function Home() {
           </div>
 
           <div className="text-center text-xs text-zinc-400 dark:text-zinc-600 pt-8">
-            Generated with Next.js & GraphQL • Data source: GitHub API
+            Copyright &#169; {new Date().getFullYear()} Buddhilive Academy. All
+            rights reserved.
           </div>
         </div>
       </main>

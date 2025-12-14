@@ -23,6 +23,7 @@ export interface Stats {
   languages: { name: string; percentage: number; color: string }[];
   topLanguagesYear: { name: string; count: number; color: string }[]; // Using count as proxy for activity
   weeklyActivity: { week: number; count: number }[];
+  firstContributionDate: string;
 }
 
 export async function getGithubStats(username: string) {
@@ -342,6 +343,9 @@ export async function getGithubStats(username: string) {
       languages,
       topLanguagesYear,
       weeklyActivity,
+      firstContributionDate:
+        allDays.find((d) => d.contributionCount > 0)?.date ||
+        createdAt.toISOString(),
     };
   } catch (error) {
     console.error("Error fetching GitHub stats:", error);
