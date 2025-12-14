@@ -1,6 +1,7 @@
 import { getGithubStats } from "@/lib/github";
 import { StatsCard } from "@/components/StatsCard";
 import { LanguageList } from "@/components/LanguageList";
+import { CommitActivity } from "@/components/CommitActivity";
 import {
   Flame,
   Trophy,
@@ -93,6 +94,11 @@ export default async function Home() {
                   Top Languages (Current Year)
                 </h3>
                 <LanguageList languages={stats.topLanguagesYear} type="count" />
+              </div>
+
+              {/* Commit Activity Widget */}
+              <div className="h-48">
+                <CommitActivity weeklyActivity={stats.weeklyActivity} />
               </div>
             </div>
           </div>

@@ -22,6 +22,7 @@ export interface Stats {
   bestStreak: number;
   languages: { name: string; percentage: number; color: string }[];
   topLanguagesYear: { name: string; count: number; color: string }[]; // Using count as proxy for activity
+  weeklyActivity: { week: number; count: number }[];
 }
 
 export async function getGithubStats(username: string) {
@@ -163,6 +164,7 @@ export async function getGithubStats(username: string) {
 
     const dayMap = new Map<string, any>();
     const yearLanguageMap = new Map<string, { count: number; color: string }>(); // For "Top Languages this Year" (optional, kept for now)
+    let weeklyActivity: { week: number; count: number }[] = [];
 
     // Process yearly contribution data
     years.forEach((year) => {
@@ -197,6 +199,18 @@ export async function getGithubStats(username: string) {
 
       if (year === currentYear) {
         totalContributionsYear = data.contributionCalendar.totalContributions;
+
+        // Process Weekly Activity for the current year (or last 52 weeks if expanded logic needed)
+        // For simpler "Last 12 Months" effectively, we can just grab the weekly aggregated data from the API
+        // But the API returns weeks for the calendar year.
+        // Let's just map the weeks directly for now to show the "Contribution Graph" style
+        weeklyActivity = weeks.map((w: any, index: number) => ({
+          week: index,
+          count: w.contributionDays.reduce(
+            (acc: number, d: any) => acc + d.contributionCount,
+            0
+          ),
+        }));
 
         // Year Languages (kept from previous logic as a separate "Top Languages Year" metric if needed)
         const contributedRepos = data.commitContributionsByRepository;
@@ -327,6 +341,7 @@ export async function getGithubStats(username: string) {
       bestStreak,
       languages,
       topLanguagesYear,
+      weeklyActivity,
     };
   } catch (error) {
     console.error("Error fetching GitHub stats:", error);
