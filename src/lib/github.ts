@@ -141,20 +141,23 @@ export async function getGithubStats(username: string) {
       const data = statsRes.viewer[`year${year}`];
       if (!data) return;
 
-      console.log(
-        `Debug Year ${year}: CalendarTotal=${data.contributionCalendar.totalContributions}, Commits=${data.totalCommitContributions}, Restricted=${data.restrictedContributionsCount}`
-      );
-
       totalCommits += data.totalCommitContributions;
       totalPRs += data.totalPullRequestContributions;
 
       // Calculate Total from components to be safe/consistent
-      lifetimeTotalContributions +=
+      // Reference: https://github.com/DenverCoder1/github-readme-streak-stats/blob/main/src/stats.php#L329-L336
+      const yearTotal =
         data.totalCommitContributions +
         data.totalPullRequestContributions +
         data.totalIssueContributions +
         data.totalRepositoryContributions +
         data.restrictedContributionsCount;
+
+      console.log(
+        `Debug Year ${year}: CalendarTotal=${data.contributionCalendar.totalContributions}, Commits=${data.totalCommitContributions}, Restricted=${data.restrictedContributionsCount}, Sum=${yearTotal}`
+      );
+
+      lifetimeTotalContributions += yearTotal;
 
       // Calendar aggregation for streaks
       const weeks = data.contributionCalendar.weeks;
@@ -197,111 +200,119 @@ export async function getGithubStats(username: string) {
     // Convert map back to array and sort
     let allDays = Array.from(dayMap.values());
 
-    // Sort desc by date
+    // Sort ASC by date for easier iteration
     allDays.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
 
-    let currentStreak = 0;
-    let bestStreak = 0;
+    console.log(
+      `Debug: CreatedAt=${createdAt.toISOString()}, Years=${years.length}`
+    );
+    console.log(
+      `Debug: Total Lifetime Calculated=${lifetimeTotalContributions}`
+    );
+    if (allDays.length > 0) {
+      console.log(`Debug: First Day: ${JSON.stringify(allDays[0])}`);
+    }
 
-    // Use local date string to match GitHub's "YYYY-MM-DD"
+    // Calculate Streaks
+    // Logic based on: https://github.com/DenverCoder1/github-readme-streak-stats/blob/main/src/stats.php
+
+    // 1. UTC Dates for Today/Yesterday
     const today = new Date();
-    const todayStr = today.toLocaleDateString("en-CA");
+    const todayStr = today.toISOString().split("T")[0]; // UTC YYYY-MM-DD
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toLocaleDateString("en-CA");
+    const yesterdayStr = yesterday.toISOString().split("T")[0]; // UTC YYYY-MM-DD
 
-    // Debug
-    console.log(`Debug Streak: Today=${todayStr}, Yesterday=${yesterdayStr}`);
+    // 2. Current Streak
+    // Loop backwards from the end of sorted days
+    let currentStreak = 0;
+    let foundStart = false;
 
-    // Find start of streak
-    // We scan the sorted list (Desc).
-    // The first entry might be Today, Yesterday, or earlier.
+    // Reverse iteration to find streak start (Today or Yesterday)
+    for (let i = allDays.length - 1; i >= 0; i--) {
+      const day = allDays[i];
+      const dayDate = day.date; // already YYYY-MM-DD from API
 
-    let startIndex = -1;
-    for (let i = 0; i < allDays.length; i++) {
-      const d = allDays[i];
-      if (d.date === todayStr) {
-        if (d.contributionCount > 0) {
-          startIndex = i;
-          break;
-        }
-      } else if (d.date === yesterdayStr) {
-        if (d.contributionCount > 0) {
-          startIndex = i;
+      // If we haven't found the start yet:
+      if (!foundStart) {
+        if (dayDate === todayStr) {
+          // If today has contributions, streak starts here
+          if (day.contributionCount > 0) {
+            currentStreak++;
+            foundStart = true;
+          }
+        } else if (dayDate === yesterdayStr) {
+          // If today didn't catch it (0 contribs or not in list), check yesterday.
+          // If yesterday has contributions, streak starts/continues here.
+          if (day.contributionCount > 0) {
+            currentStreak++;
+            foundStart = true;
+          }
+        } else if (dayDate < yesterdayStr) {
+          // If we went past yesterday without finding a start, streak is 0.
           break;
         }
       } else {
-        // If we passed both Today and Yesterday without finding a match,
-        // and assuming list is sorted (it is), streak is 0.
-        // BUT, if today is Monday, previous might be Sunday...
-        // If array is dense (no missing days), we just stop.
-        if (d.date < yesterdayStr) break;
-      }
-    }
-
-    if (startIndex !== -1) {
-      currentStreak = 1;
-      // Iterate backwards in time (forward in array)
-      for (let i = startIndex + 1; i < allDays.length; i++) {
-        const prevDay = allDays[i - 1];
-        const currDay = allDays[i];
-
-        // Check day diff
-        const d1 = new Date(prevDay.date);
-        const d2 = new Date(currDay.date);
-        const diffTime = Math.abs(d1.getTime() - d2.getTime());
+        // Once start is found, continue counting backwards as long as consecutive days have contributions
+        const prevDay = allDays[i + 1]; // because we are iterating backwards, i+1 is the "future" day we just checked
+        // Check for continuity
+        const d1 = new Date(dayDate);
+        const d2 = new Date(prevDay.date);
+        const diffTime = Math.abs(d2.getTime() - d1.getTime());
         const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
         if (diffDays === 1) {
-          if (currDay.contributionCount > 0) {
+          if (day.contributionCount > 0) {
             currentStreak++;
           } else {
-            break;
+            console.log(`Debug: Streak broke at ${dayDate} (0 contributions)`);
+            break; // Streak broken by 0 contribution day
           }
         } else if (diffDays === 0) {
-          // Duplicate day? Should be handled by Map, but safe to ignore
+          // Duplicate day? (Shouldn't happen with map)
           continue;
         } else {
+          console.log(
+            `Debug: Streak broke at ${dayDate} (Gap of ${diffDays} days from ${prevDay.date})`
+          );
           // Gap > 1 day
           break;
         }
       }
     }
 
-    // Best Streak (Iterate all days sorted ASC to find longest sequence)
-    // Sort Asc for simple iteration
-    const sortedAsc = [...allDays].sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-    );
-
+    // 3. Longest Streak
+    let bestStreak = 0;
     let tempStreak = 0;
-    // Iterate and ensure continuity by date
-    // Note: sortedAsc might have gaps if API missing days (unlikely for Calendar but possible)
-    // So better to check date diff.
 
-    for (let i = 0; i < sortedAsc.length; i++) {
-      const day = sortedAsc[i];
+    for (let i = 0; i < allDays.length; i++) {
+      const day = allDays[i];
       if (day.contributionCount > 0) {
-        // Check if contiguous with previous
         if (tempStreak === 0) {
           tempStreak = 1;
         } else {
-          const prevDay = sortedAsc[i - 1];
-          const dayDate = new Date(day.date);
-          const prevDate = new Date(prevDay.date);
-          const diffTime = Math.abs(dayDate.getTime() - prevDate.getTime());
-          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          const prevDay = allDays[i - 1];
+          const d1 = new Date(prevDay.date);
+          const d2 = new Date(day.date);
+          const diffTime = Math.abs(d2.getTime() - d1.getTime());
+          const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
           if (diffDays === 1) {
             tempStreak++;
           } else {
-            // Gap detected (even if both have contributions, if gap > 1 day, streak resets)
-            // But wait, if diffDays > 1, the days IN BETWEEN had 0 contributions (since we filtered list? No, we didn't filter out 0s from allDays, we just merged years).
-            // Actually logic above: `allDays` contains ALL days from calendar (which includes 0s).
-            // So `sortedAsc` is contiguous.
-            tempStreak++;
+            // Continuity broken (gap > 1 day)
+            // Note: If gap is exactly 1 day (diffDays=1), it's contiguous.
+            // If diffDays > 1, then there were missing days (which are implicitly 0 contributions) OR we just skipped 0-contrib days if they weren't in list?
+            // Wait, allDays came from contributionCalendar which includes ALL days, even 0s?
+            // Yes, GitHub API returns all days.
+            // So if we have a gap > 1 day, it effectively means missing data or 0s (but 0s would be in the loop).
+            // Actually, if we hit a 0 contribution day, we go to else block.
+            // So this `diffDays` check is just for sanity or missing data cases.
+
+            // However, we must reset if diffDays > 1
+            tempStreak = 1; // Restart streak at current day
           }
         }
         if (tempStreak > bestStreak) bestStreak = tempStreak;
