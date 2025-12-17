@@ -12,9 +12,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const githubUsername = process.env.GITHUB_USERNAME || "Buddhilive";
+
 export const metadata: Metadata = {
-  title: "Buddhilive GitHub Stats",
-  description: "Buddhilive GitHub Stats Dashboard",
+  title: `${githubUsername} GitHub Stats`,
+  description: `${githubUsername} GitHub Stats Dashboard`,
 };
 
 export default function RootLayout({

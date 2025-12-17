@@ -15,7 +15,8 @@ export const revalidate = 3600; // Revalidate every hour
 
 export default async function Home() {
   try {
-    const stats = await getGithubStats("Buddhilive");
+    const githubUsername = process.env.GITHUB_USERNAME || "Buddhilive";
+    const stats = await getGithubStats(githubUsername);
 
     return (
       <main className="min-h-screen bg-zinc-50 dark:bg-zinc-950 p-4 md:p-8 flex flex-col items-center justify-center font-sans">
@@ -25,7 +26,7 @@ export default async function Home() {
               GitHub Stats Dashboard
             </h1>
             <p className="text-zinc-500 dark:text-zinc-400">
-              @Buddhilive's Open Source Contribution Analysis
+              @{githubUsername}'s Open Source Contribution Analysis
             </p>
           </div>
 
