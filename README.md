@@ -2,7 +2,7 @@
 
 A sleek, modern dashboard to showcase your GitHub statistics, including streaks, total contributions, and language usage.
 
-![Dashboard Preview](https://githubstats.buddhilive.com/)
+[Dashboard Preview](https://githubstats.buddhilive.com/)
 
 ## 🚀 Getting Started
 
@@ -70,7 +70,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see your 
 
 ## 🛡️ License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE](LICENSE) file for details.
 
 ---
 
